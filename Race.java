@@ -96,14 +96,14 @@ public class Race {
     }
     
     //methods
-    public int nextOvertakeTime(int carPosition, int carSpeed){ //find out when the main car (Cm) will meet the next car
+    private int nextOvertakeTime(int carPosition, int carSpeed){ //find out when the main car (Cm) will meet the next car
         //System.out.println("Next carPosition: " + carPosition);
         //System.out.println("Next carSpeed: " + carSpeed);
         //System.out.println("nextOvertakeTime: " + (carPosition - mainCar.getPosition()) / (mainCar.getSpeed() - carSpeed));
         return (carPosition - mainCar.getPosition()) / (mainCar.getSpeed() - carSpeed);
     }
 
-    public int whereNextOvertakeCar (int carPosition, int carSpeed){ //find out where the next Car will meet the next car
+    private int whereNextOvertakeCar (int carPosition, int carSpeed){ //find out where the next Car will meet the next car
         if(carPosition < 10000){
             int whereMainCar =  (mainCar.getSpeed() * nextOvertakeTime(carPosition, carSpeed)); //before overtaking fee
             //System.out.println("Car position at overtaking..: " + whereMainCar);
@@ -121,10 +121,14 @@ public class Race {
         }
     }
 
-    public void updateCarPositions(){
+    private void updateCarPositions(){
         for(int i=0; i<referencesCars.size(); i++){
             referencesCars.get(i).setRemainingDistance(referencesCars.get(i).getPosition() + referencesCars.get(i).getSpeed() * this.time);
         }
+    }
+
+    private void isRacingLineAvaliable(){
+        //TODO
     }
 
     public void nextCicle(){
