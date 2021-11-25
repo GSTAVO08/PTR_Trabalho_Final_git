@@ -26,7 +26,7 @@ public class main {
 
         //initialzing main car and race
         Car mainCar;
-        mainCar = new Car(70, 10000, 5000, 200);
+        mainCar = new Car(60, 10000, 5000, 200);
         Race race = new Race(referencesCars, mainCar, controlPoints, pitStops, overtakingFee);
         //sorting all lists
         Collections.sort(controlPoints);

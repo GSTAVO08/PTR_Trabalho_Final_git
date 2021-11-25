@@ -91,12 +91,12 @@ public class Race {
 
     public int whereNextOvertakeCar (int carPosition, int carSpeed){ //find out where the next Car will meet the next car
         int whereMainCar =  (mainCar.getSpeed() * nextOvertakeTime(carPosition, carSpeed)); //before overtaking fee
-        //System.out.println(whereMainCar);
+        System.out.println(whereMainCar);
         int whereOvertakeCar = whereMainCar + (carSpeed * overtakingFee); //after overtaking fee
-        //System.out.println(whereNextCar);
+        System.out.println(whereOvertakeCar);
         int newTimingMeeting = (whereOvertakeCar - whereMainCar) / (mainCar.getSpeed() - carSpeed); //meeting point after overtaking fee
         whereMainCar = whereMainCar + newTimingMeeting*mainCar.getSpeed();
-        //System.out.println(whereMainCar); 
+        System.out.println(whereMainCar); 
         return whereMainCar;
     }
 
