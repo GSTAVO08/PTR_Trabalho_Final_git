@@ -21,7 +21,7 @@ public class Car { //application
         this.maximum_racing_distance = maximum_racing_distance;
         this.minimum_racing_distance = minimum_racing_distance;
         this.maximum_timing_constraint = maximum_timing_constraint;
-        this.remainingDistance = Math.abs(position - maximum_racing_distance);
+        this.remainingDistance = Math.abs(maximum_racing_distance - position);
     }
 
     //getters and settlers

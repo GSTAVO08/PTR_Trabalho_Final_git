@@ -6,6 +6,8 @@ public class Race {
     private LinkedList<Integer> controlPoints; //list of control points (WCEC, worst-case execution cycles)
     private LinkedList<PitStop> pitStops; //list of Preemption points
     private int overtakingFee; //DVFS overhead
+    private int time;
+
 
     public Race(LinkedList<Car> referencesCars, Car mainCar, LinkedList<Integer> controlPoints,
             LinkedList<PitStop> pitStops, int overtakingFee) {
@@ -14,10 +16,15 @@ public class Race {
         this.controlPoints = controlPoints;
         this.pitStops = pitStops;
         this.overtakingFee = overtakingFee;
+        this.time = 0;
     }
 
-    public LinkedList<Car> getReferencesCars() {
-        return referencesCars;
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 
     public int nextReferencesCars() { //what is the car ahead
@@ -25,7 +32,7 @@ public class Race {
         while(this.mainCar.getPosition() >= referencesCars.get(index).getPosition() && (index < referencesCars.size()-1)){ //if the main car position is ahead
             index++;
         }
-        System.out.println("Index of the car ahead..: " + index);
+        //System.out.println("Index of the car ahead..: " + index);
         return index;
     }
 
@@ -83,33 +90,53 @@ public class Race {
     public void setOvertakingFee(int overtakingFee) {
         this.overtakingFee = overtakingFee;
     }
+
+    public LinkedList<Car> getReferencesCars() {
+        return referencesCars;
+    }
     
     //methods
     public int nextOvertakeTime(int carPosition, int carSpeed){ //find out when the main car (Cm) will meet the next car
+        //System.out.println("Next carPosition: " + carPosition);
+        //System.out.println("Next carSpeed: " + carSpeed);
+        //System.out.println("nextOvertakeTime: " + (carPosition - mainCar.getPosition()) / (mainCar.getSpeed() - carSpeed));
         return (carPosition - mainCar.getPosition()) / (mainCar.getSpeed() - carSpeed);
     }
 
     public int whereNextOvertakeCar (int carPosition, int carSpeed){ //find out where the next Car will meet the next car
-        int whereMainCar =  (mainCar.getSpeed() * nextOvertakeTime(carPosition, carSpeed)); //before overtaking fee
-        System.out.println(whereMainCar);
-        int whereOvertakeCar = whereMainCar + (carSpeed * overtakingFee); //after overtaking fee
-        System.out.println(whereOvertakeCar);
-        int newTimingMeeting = (whereOvertakeCar - whereMainCar) / (mainCar.getSpeed() - carSpeed); //meeting point after overtaking fee
-        whereMainCar = whereMainCar + newTimingMeeting*mainCar.getSpeed();
-        System.out.println(whereMainCar); 
-        return whereMainCar;
+        if(carPosition < 10000){
+            int whereMainCar =  (mainCar.getSpeed() * nextOvertakeTime(carPosition, carSpeed)); //before overtaking fee
+            //System.out.println("Car position at overtaking..: " + whereMainCar);
+            int whereOvertakeCar = whereMainCar + (carSpeed * overtakingFee); //after overtaking fee
+            //System.out.println("Car position after overtaking..: " + whereOvertakeCar);
+            int newTimingMeeting = (whereOvertakeCar - whereMainCar) / (mainCar.getSpeed() - carSpeed); //meeting point after overtaking fee
+            whereMainCar = whereMainCar + newTimingMeeting*mainCar.getSpeed();
+            //System.out.println("Car position after overtaking fee..: " + whereMainCar); 
+            this.time = this.time + nextOvertakeTime(carPosition, carSpeed);
+            System.out.println("Time..: " + this.time); 
+            return whereMainCar;
+        }else{
+            this.time = this.time +  nextOvertakeTime(10000, mainCar.getSpeed());
+            return 10000;
+        }
+    }
+
+    public void updateCarPositions(){
+        for(int i=0; i<referencesCars.size(); i++){
+            referencesCars.get(i).setRemainingDistance(referencesCars.get(i).getPosition() + referencesCars.get(i).getSpeed() * this.time);
+        }
     }
 
     public void nextCicle(){
-        System.out.println("\nNext cicle...");
+        //System.out.println("\nNext cicle...");
         int indexNextCar = nextReferencesCars();
         //int indexPreviousCar = previousReferencesCars();
         int aux = whereNextOvertakeCar(referencesCars.get(indexNextCar).getPosition(), referencesCars.get(indexNextCar).getSpeed());
         //the main car will reach the car in front
         mainCar.setRemainingDistance(mainCar.getMaximum_racing_distance() - aux); //new main car position
         mainCar.setSpeed(referencesCars.get(indexNextCar).getSpeed());
-        System.out.println("Car position..: " + mainCar.getPosition());
-        System.out.println("Car speed..: " + mainCar.getSpeed());
-    
+        //System.out.println("Car position..: " + mainCar.getPosition());
+        //System.out.println("Car speed..: " + mainCar.getSpeed());
+        updateCarPositions();
     }
 }

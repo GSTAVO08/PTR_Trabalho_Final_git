@@ -8,10 +8,10 @@ public class main {
         final int overtakingFee = 1;
 
         //initial car dataset
-        referencesCars.addFirst(new Car(20, 4000, 5000, 200, 6000));
-        referencesCars.addFirst(new Car(40, 8000, 5000, 200, 2000));
-        referencesCars.addFirst(new Car(60, 12000, 5000, 200, -2000));
-        referencesCars.addFirst(new Car(100, 20000, 5000, 200, -10000));
+        referencesCars.addFirst(new Car(20, 10000, 5000, 200, 6000));
+        referencesCars.addFirst(new Car(40, 10000, 5000, 200, 2000));
+        referencesCars.addFirst(new Car(60, 10000, 5000, 200, -2000));
+        referencesCars.addFirst(new Car(100, 10000, 5000, 200, -10000));
 
         int aux = -10000;
         while(aux < 9500){ //control points
